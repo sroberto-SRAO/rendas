@@ -1,0 +1,7 @@
+INDEX VERSION 1.4+/home/arminda/Área de Trabalho/Beto/Sistema Rendas/rendas/.metadata/.plugins/org.eclipse.wst.jsdt.core/indexes
+1045154638.index
+2035454266.index
+3189011100.index
+590880522.index
+2456574800.index
+2249983074.index

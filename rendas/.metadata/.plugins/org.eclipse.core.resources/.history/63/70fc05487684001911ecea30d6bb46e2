@@ -1,0 +1,81 @@
+package DAO;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.JOptionPane;
+
+import conexaoBD.conexao;
+import entity.Imovel;
+import exception.ErroSistema;
+
+public class ImovelDAO {
+	
+	public void salvar(Imovel i) throws ErroSistema {
+		
+		try {
+			Connection con = conexao.getConnection();
+			PreparedStatement stmt = null;
+
+			if(i.getId() == null) {
+				stmt = con.prepareStatement("INSERT INTO 'i' (nome, endereco, bairro, cep, cidade, area, anoconstrucao) VALUES(?, ?, ?, ?, ?, ?, ?)");
+			} else {
+				stmt = con.prepareStatement("update i set nome=?, endereco=?, bairro=?, cep=?, cidade=?, area=?, anoconstrucao=? where id=?");	
+				stmt.setInt(8, i.getId());
+			}
+
+			stmt = con.prepareStatement("INSERT INTO Imovel (nome, endereco, bairro, cep, cidade, area, anoconstrucao) VALUES(?, ?, ?, ?, ?, ?, ?)");
+			stmt.setString(1, i.getNome());
+			stmt.setString(2, i.getEndereco());
+			stmt.setString(3,  i.getBairro());
+			stmt.setInt(4, i.getCep());
+			stmt.setString(5, i.getCidade());
+			stmt.setInt(6, i.getArea());
+			stmt.setInt(7, i.getAnoconstrucao());
+			
+			stmt.execute();
+			conexao.fechaconexao(con);
+			
+		} catch (SQLException e) {
+			Logger.getLogger(ImovelDAO.class.getName()).log(Level.SEVERE, null, e);
+		} 
+		
+	}
+	
+	public List<Imovel> buscar() throws ErroSistema {
+		try {
+			Connection conb = conexao.getConnection();
+			System.out.println("conexão para listar tabela ok !");
+			PreparedStatement ps = null;
+			ps = conb.prepareStatement("select * from Imovel");
+			ResultSet rs = ps.executeQuery();
+			List<Imovel> imoveis = new ArrayList<>();
+			
+			while(rs.next()) {
+				Imovel imovel = new Imovel();
+				imovel.setId(rs.getInt("id"));
+				imovel.setNome(rs.getString("nome"));
+				imovel.setEndereco(rs.getString("endereco"));
+				imovel.setBairro(rs.getString("bairro"));
+				imovel.setCep(rs.getInt("cep"));
+				imovel.setCidade(rs.getString("cidade"));
+				imovel.setArea(rs.getInt("area"));
+				imovel.setAnoconstrucao(rs.getInt("anoconstrucao"));
+				imoveis.add(imovel);
+			}
+			return imoveis;
+				
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "Atenção !!!!! Erro ao fazer o select - tabela imovel!");
+			return null;
+		} 
+	}
+		
+		
+}

@@ -1,0 +1,100 @@
+package DAO;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.TypedQuery;
+import javax.transaction.Transaction;
+
+import org.hibernate.Query;
+
+import conexaoBD.conexao;
+import entity.Imovel;
+import entity.Taxa_Imovel;
+import exception.ErroSistema;
+import util.JPAUtil;
+
+public class ImovelDAO implements CrudDAO<Imovel>{
+	private static final String ERRO01 = "Problemas no acesso ao banco para deletar o registro!";
+	private static final String ERRO02 = "Problemas no acesso ao banco para inserir o registro!";
+	private static final String ERRO03 = "Problemas no acesso ao banco para buscar o registro!";
+	
+	@Override
+	public void salvar(Imovel i) throws ErroSistema {
+		
+		System.out.println("Entrei para salvar o registro....!");
+		System.out.println("vou gravar o imovel ....."+i.getEndereco()+i.getId());
+		System.out.println("ano construcao...."+i.getAnoconstrucao());
+		EntityManager em = JPAUtil.getEntityManager();
+		EntityTransaction et = em.getTransaction();
+		
+		Imovel img = em.merge(i); // alterando o estado para managead 
+
+		et.begin();
+		
+		Taxa_Imovel txi = new Taxa_Imovel();
+		txi.setDescricao("descrição para gravar");
+		txi.setTaxas_imovel("s");
+		txi.setTx_proprietario("n");
+		txi.setImovel(img);
+		txi.setVa_taxa(2);
+				
+		em.persist(img);
+		et.commit();
+		em.close();
+		
+		System.out.println("Registro salvo com sucesso !!!!!!");
+	}
+	
+	@Override
+	public List<Imovel> buscar() throws ErroSistema {
+		
+		try {
+			EntityManager em = JPAUtil.geEntityManager();
+			System.out.println("vou executar a query...!!!!!s");
+			String query = "select im from Imovel im";
+			return em.createQuery(query, Imovel.class).getResultList(); 
+		} catch (Exception ex) {
+			System.out.println("deu erro na busca!!!!!!");
+			throw new ErroSistema(ERRO03, ex);
+		}
+		
+	}
+	
+	@Override
+	public void deletar(Imovel imovel) throws ErroSistema {
+		
+		try {
+			System.out.println("Entrei para fazer o remove....");
+			EntityManager em = JPAUtil.geEntityManager();
+			EntityTransaction et = em.getTransaction();
+			Imovel im = em.getReference(Imovel.class, imovel.getId());
+			et.begin();
+			em.remove(im);
+			et.commit();
+			em.close();
+			System.out.println("remove feito com sucesso !!!!!!!!!!!!!!!!");
+		} catch (Exception ex) {
+			System.out.println("deu erro na deleção!!!!!!");
+			throw new ErroSistema(ERRO03, ex);
+		}
+	}
+	@Override
+	public Imovel editar(Imovel imovel) throws ErroSistema {
+
+		System.out.println("Estou no editar DAO....");
+		EntityManager em = JPAUtil.geEntityManager();
+		Imovel im = em.find(Imovel.class, imovel.getId());
+		em.merge(im);
+		System.out.println("endereço => "+im.getEndereco()+im.getId());
+		return im;
+	}
+		
+}

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://xmlns.jcp.org/jsf/html"
+	  xmlns:p="http://primefaces.org/ui"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<h:body>
+	  <ui:composition>
+		<h:form>
+		  <div>
+		    <p:fieldset legend="Imóveis" style="font-size:15px" update="@form">
+			  <p:toolbar>
+				<p:toolbarGroup style="margin-left:10px; font-size:18px;" update="@form">
+					<p:growl life="2000" showDetail="true" sticky="true" style="font-size:12px"></p:growl>
+					<p:commandLink action="#{imovelMB.novo}" style="margin-right:15px;" update="@form">
+						<h:outputText value="Novo" style="font-size:12px" />
+			<!-- 			<f:ajax render="entrada"/>   -->
+					</p:commandLink>
+					<p:commandLink action="${imovelMB.salvar(imovelMB.im)}" style="margin-right:15px;" update="@form">
+						<h:outputText value="Salvar " style="font-size:12px"/>
+					</p:commandLink>
+					<p:commandLink action="#{imovelMB.buscar}" style="margin-right:15px;" process="@form"  update="@form">
+						<h:outputText value="Listar " style="font-size:12px"/>
+					</p:commandLink>
+				</p:toolbarGroup>
+
+			  </p:toolbar>
+		    </p:fieldset>
+		</div>
+		<div>
+	<!-- 	<p:messages autoUpdate="true" showDetail="true" style="fonte-size:10px"></p:messages>  -->
+
+		    <h4 style="margin-top:0"></h4>
+	        <p:panel id="super-p0" style="margin-bottom:20px;"> 
+		      <h:panelGroup id="panel-gp0">
+				<p:panelGrid rendered="#{imovelMB.eParaInserir == true}" id="panel-gr0"  columns="8" cellspacing="5" width="10" style="font-size:12px;">
+					<p:outputLabel value="Nome"></p:outputLabel>
+					<p:inputText value="#{imovelMB.im.nome}" size="50" maxlength="45"></p:inputText>
+			
+					<p:outputLabel value="Endereço"></p:outputLabel>
+					<p:inputText value="#{imovelMB.im.endereco}" size="50" maxlength="45"></p:inputText>
+			
+					<p:outputLabel value="Bairro"></p:outputLabel>
+					<p:inputText value="#{imovelMB.im.bairro}" size="50" maxlength="45"></p:inputText>
+			
+					<p:outputLabel value="CEP"></p:outputLabel>
+					<p:inputText value="#{imovelMB.im.cep}" size="10" maxlength="8"></p:inputText>
+			
+					<p:outputLabel value="Cidade"></p:outputLabel>
+					<p:inputText value="#{imovelMB.im.cidade}" size="50" maxlength="45"></p:inputText>
+			
+					<p:outputLabel value="Área Construida"></p:outputLabel>
+					<p:inputText value="#{imovelMB.im.area}" size="5" maxlength="4"></p:inputText>
+			
+					<p:outputLabel value="Ano da Construção"></p:outputLabel>
+					<p:inputMask mask="9999" value="#{imovelMB.im.anoconstrucao}" size="5" maxlength="4"></p:inputMask>		
+
+				</p:panelGrid>
+			  </h:panelGroup>
+   	 	    </p:panel>   
+		</div>
+		<div>		
+			<p:panel id="super-p"  header="entrada" style="margin-bottom:20px; font-size:10px;">
+				<p:dataTable id="edição"  value="#{imovelMB.entidades}" var="imoveltb" converter="ImovelConverter" rows="8" paginator="true" >
+	 				<p:column>
+						<p:commandButton value="Editar" actionListener="${imovelMB.listener}" action="${imovelMB.editar(imoveltb)}" update="@form">
+							<f:setPropertyActionListener value="#{imoveltb}" target="#{imovelMB.im}"></f:setPropertyActionListener>
+						</p:commandButton>
+						<p:commandButton value="Deletar" action="${imovelMB.deletar(imoveltb)}" update="@form"/>
+					</p:column>
+					<p:column headerText="Nome" sortBy="#{imoiveltb.nome}" style="width:45px;">
+						<h:outputText value="#{imoveltb.nome} "></h:outputText>
+					</p:column>
+			
+					<p:column headerText="Endereço">
+						<h:outputText value="#{imoveltb.endereco}"></h:outputText>
+					</p:column>
+				
+					<p:column headerText="Bairro" sortBy="#{listaimoveis.bairro}">
+						<h:outputText value="#{imoveltb.bairro}"></h:outputText>
+					</p:column>
+				
+					<p:column headerText="CEP">
+						<h:outputText value="#{imoveltb.cep}"></h:outputText>
+					</p:column>
+				
+					<p:column headerText="Cidade">
+						<h:outputText value="#{imoveltb.cidade}"></h:outputText>
+					</p:column>
+				
+					<p:column headerText="Área Construída">
+						<h:outputText value="#{imoveltb.area}"></h:outputText>
+					</p:column>
+				
+					<p:column headerText="Ano de Construção" sortBy="#{imoveltb.anoconstrucao}">
+						<h:outputText value="#{imoveltb.anoconstrucao}"></h:outputText>
+					</p:column>
+			
+				</p:dataTable>
+			</p:panel>
+		  </div>
+		</h:form>
+	  </ui:composition>
+	</h:body>
+</html>

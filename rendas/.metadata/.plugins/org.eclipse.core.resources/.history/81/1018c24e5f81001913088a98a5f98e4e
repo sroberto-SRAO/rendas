@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:decorate xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:p="http://primefaces.org/ui"
+	  xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	  template="template.xhtml">
+
+	<h:form>
+		
+		<p:fieldset legend="Imóveis">
+			<p:toolbar>
+
+				<p:toolbarGroup>
+					<p:commandButton value="Criar Novo" action="#{imovelMB.adicionar()}" update="@form"></p:commandButton>
+					<p:commandButton value="Listar" action="#{imovelMB.listar()}" update="@form"></p:commandButton>
+				</p:toolbarGroup>
+
+			</p:toolbar>
+
+
+			<p:panelGrid columns="2">
+				<p:outputLabel value="Nome"></p:outputLabel>
+				<p:inputText value="#{imovelMB.imovel.nome}"></p:inputText>
+			
+				<p:outputLabel value="Endereço"></p:outputLabel>
+				<p:inputText value="#{imovelMB.imovel.endereco}"></p:inputText>
+			
+				<p:outputLabel value="Bairro"></p:outputLabel>
+				<p:inputText value="#{imovelMB.imovel.bairro}"></p:inputText>
+			
+				<p:outputLabel value="CEP"></p:outputLabel>
+				<p:inputText value="#{imovelMB.imovel.cep}"></p:inputText>
+			
+				<p:outputLabel value="Cidade"></p:outputLabel>
+				<p:inputText value="#{imovelMB.imovel.cidade}"></p:inputText>
+			
+				<p:outputLabel value="Área Construida"></p:outputLabel>
+				<p:inputText value="#{imovelMB.imovel.area}"></p:inputText>
+			
+				<p:outputLabel value="Ano da Construção"></p:outputLabel>
+				<p:inputMask mask="9999" value="#{imovelMB.imovel.anoconstrucao}"></p:inputMask>		
+
+			</p:panelGrid>
+
+
+			<p:dataTable value="#{imovelMB.imoveis}" var="listaimoveis">
+
+				<p:column headerText="Nome" sortBy="#{listaimoveis.nome}">
+					<h:outputText value="#{listaimoveis.nome} "></h:outputText>
+				</p:column>
+			
+				<p:column headerText="Endereço">
+					<h:outputText value="#{listaimoveis.endereco}"></h:outputText>
+				</p:column>
+				
+				<p:column headerText="Bairro" sortBy="#{listaimoveis.bairro}">
+					<h:outputText value="#{listaimoveis.bairro}"></h:outputText>
+				</p:column>
+				
+				<p:column headerText="CEP">
+					<h:outputText value="#{listaimoveis.cep}"></h:outputText>
+				</p:column>
+				
+				<p:column headerText="Cidade">
+					<h:outputText value="#{listaimoveis.cidade}"></h:outputText>
+				</p:column>
+				
+				<p:column headerText="Área Construída">
+					<h:outputText value="#{listaimoveis.area}"></h:outputText>
+				</p:column>
+				
+				<p:column headerText="Ano de Construção" sortBy="#{listaimoveis.anoconstrucao}">
+					<h:outputText value="#{listaimoveis.anoconstrucao}"></h:outputText>
+				</p:column>
+			
+			</p:dataTable>
+
+		</p:fieldset>
+
+	</h:form>
+
+</ui:decorate>
